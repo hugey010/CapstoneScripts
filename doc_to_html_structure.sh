@@ -1,8 +1,11 @@
 #!/bin/bash
+#
+# bash script to generate a copy of the given folder whilst converting all .doc* files to .html files
+# requires from folder and destination folder as arguments
+#
 # Author: Tyler Hugenberg
 # Date: 2/15/14
-# this script will generate a copy of the folder converting all .doc* files to .html files
-# requires from folder and destination folder as arguments
+# Team: Clean And Sober Toolbox
 
 if [ $# -eq 2 ] 
   then

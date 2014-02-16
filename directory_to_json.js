@@ -1,7 +1,20 @@
-// prepend json crap
-//var result = "{\"list\":[";
+/* directory_to_json.js
+ *
+ * Node script to convert a directory of folders and html files into json
+ * as per (json documentation a.1 whatever).
+ *
+ * Common usage: pipe the output to a file or curl
+ *
+ * Author: Tyler Hugenberg
+ * Date: 2/15/2014
+ * Team: Clean And Sober Toolbox
+ */
+
+
+// the resulting json string
 var result = "";
 
+// id counter
 var identifier = 0;
 
 var fs = require('fs')
@@ -28,10 +41,9 @@ function dirTree(filename) {
     info.type = "content";
 
     // read contents of file into message variable
-    info.message  = fs.readFileSync(filename, 'utf8');//, function(err, data) {
+    info.message  = fs.readFileSync(filename, 'utf8');
 
   }
-  //return JSON.stringify(info);
   info.identifier = identifier++;
   return info;
 }
@@ -61,5 +73,9 @@ result = result.replace(/\\'/g, "'");
 // replace all double escape characters
 result = result.replace(/(\\\\)/g, "\\");
 
+// strip null characters u0000
+result = result.replace(/\\u0000/g, "");
+
+// output result
 console.log(result);
 
