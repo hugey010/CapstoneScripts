@@ -44,35 +44,27 @@ function dirTree(filename) {
     var separatedLines = fileContents.split(/\n/g);
     // put separated lines into json structure
     var message = "";
+    //var todo = "";
     var i = 0;
     for (i = 0; i < separatedLines.length; i++) {
       var currentLine = separatedLines[i];
       // check for todo at beginning of line
-      if (currentLine.match(/to do/i)) {
+      if (currentLine.match(/to do/i) || currentLine.match(/todo/i)) {
           info.todo = currentLine;
       } else {
         message += currentLine;
       }
     }
-    info.message = message;
-    /*
     if (message.length <= 1) {
-      //console.log("message = " + message);
       message = "";
     }
-    info.message = message;
 
-    var todo = "";
-    while (todo.length <= 0 && counter < separatedLines.length) {
-      todo = separatedLines[counter];
-      counter++;
-    }
-    if (todo.length <= 1) {
-      todo= "";
-    }
-    info.todo = todo;
-    */
+    // strip tabs from messages and todos
+    message = message.replace(/\t/g, "");
+    //todo = todo.replace(/\t/g, "");
+    info.message = message;
   }
+
   info.identifier = identifier++;
   return info;
 }
