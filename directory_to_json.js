@@ -1,6 +1,6 @@
 /* directory_to_json.js
  *
- * Node script to convert a directory of folders and html files into json
+ * Node (javascript) to convert a directory of folders and html files into json
  * as per (json documentation a.1 whatever).
  *
  * Common usage: pipe the output to a file or curl
@@ -37,18 +37,28 @@ function dirTree(filename) {
       return dirTree(filename + '/' + child);
     });
   } else {
-    // should be html file 
     info.type = "content";
 
     // read contents of file into message variable
     var fileContents = fs.readFileSync(filename, 'utf8');
     var separatedLines = fileContents.split(/\n/g);
     // put separated lines into json structure
-    var counter = 1;
     var message = "";
-    while (message.length <= 0 && counter < separatedLines.length) {
-      message = separatedLines[counter];
-      counter++;
+    var i = 0;
+    for (i = 0; i < separatedLines.length; i++) {
+      var currentLine = separatedLines[i];
+      // check for todo at beginning of line
+      if (currentLine.match(/to do/i)) {
+          info.todo = currentLine;
+      } else {
+        message += currentLine;
+      }
+    }
+    info.message = message;
+    /*
+    if (message.length <= 1) {
+      //console.log("message = " + message);
+      message = "";
     }
     info.message = message;
 
@@ -57,7 +67,11 @@ function dirTree(filename) {
       todo = separatedLines[counter];
       counter++;
     }
+    if (todo.length <= 1) {
+      todo= "";
+    }
     info.todo = todo;
+    */
   }
   info.identifier = identifier++;
   return info;
