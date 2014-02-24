@@ -23,7 +23,7 @@ var fs = require('fs')
 function dirTree(filename) {
   var stats = fs.lstatSync(filename),
       info = {
-         title : path.basename(filename).replace(".html", "")
+         title : path.basename(filename).replace(".txt", "") // .txt -> html (depends what converting)
       };
 
 
@@ -41,8 +41,23 @@ function dirTree(filename) {
     info.type = "content";
 
     // read contents of file into message variable
-    info.message  = fs.readFileSync(filename, 'utf8');
+    var fileContents = fs.readFileSync(filename, 'utf8');
+    var separatedLines = fileContents.split(/\n/g);
+    // put separated lines into json structure
+    var counter = 1;
+    var message = "";
+    while (message.length <= 0 && counter < separatedLines.length) {
+      message = separatedLines[counter];
+      counter++;
+    }
+    info.message = message;
 
+    var todo = "";
+    while (todo.length <= 0 && counter < separatedLines.length) {
+      todo = separatedLines[counter];
+      counter++;
+    }
+    info.todo = todo;
   }
   info.identifier = identifier++;
   return info;
@@ -60,6 +75,7 @@ result = result.replace(/type:/g, "\"type\":");
 result = result.replace(/message:/g, "\"message\":");
 result = result.replace(/list:/g, "\"list\":");
 result = result.replace(/identifier:/g, "\"identifier\":");
+result = result.replace(/todo:/g, "\"todo\":");
 
 // remove undefined (bad folders)
 result = result.replace(/undefined,/g, "");
@@ -73,8 +89,8 @@ result = result.replace(/\\'/g, "'");
 // replace all double escape characters
 result = result.replace(/(\\\\)/g, "\\");
 
-// strip null characters u0000
-result = result.replace(/\\u0000/g, "");
+// strip null characters u0000 (for html)
+//result = result.replace(g\\u0000/g, "");
 
 // output result
 console.log(result);

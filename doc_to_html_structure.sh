@@ -16,17 +16,17 @@ if [ $# -eq 2 ]
 
     # convert .doc files
     find "$2" -type f -name "*.doc*" | while read file; do
-      textutil -convert html "$file"
+      textutil -convert txt "$file"
       rm "$file"
     done
 
     # escape double quotes in html files
-    find "$2" -type f -name "*.html" | while read file; do
+    find "$2" -type f -name "*.txt" | while read file; do
       sed -ie 's/"/\\"/g' "$file"
     done
 
     # remove e files that get generated from string replace
-    find "$2" -type f -name "*.htmle" | while read file; do
+    find "$2" -type f -name "*.txte" | while read file; do
       rm "$file"
     done
 
