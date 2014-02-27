@@ -44,7 +44,6 @@ function dirTree(filename) {
     var separatedLines = fileContents.split(/\n/g);
     // put separated lines into json structure
     var message = "";
-    //var todo = "";
     var i = 0;
     for (i = 0; i < separatedLines.length; i++) {
       var currentLine = separatedLines[i];
