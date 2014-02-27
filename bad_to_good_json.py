@@ -20,15 +20,20 @@ def removeMessagesAndInsertIntoBetter(item):
   else:
     # add message to messages list if not already contained
     foundtitle = 0
+    foundidentifier = 0
     for message in better_json['messages']:
       if message['title'] == item['title']:
         foundtitle = 1
+        foundidentifier = message['identifier']
         break
 
     if foundtitle == 0:
       copyitem = item.copy()
       del copyitem['type']
       better_json['messages'].append(copyitem)
+    else:
+      #found the message. alter identifier for item
+      item['identifier'] = foundidentifier
 
     # delete all fiends from structure except id and type
     del item['message']
