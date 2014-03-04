@@ -1,3 +1,10 @@
+# Python script to convert the bad JSON output from javascript
+# to smaller and more database friendly JSON.
+#
+# Author: Tyler Hugenberg
+# Team: Clean & Sober Toolbox
+# 2/28/2014
+
 import json
 from pprint import pprint
 json_data=open('final_result.json')
@@ -10,8 +17,6 @@ data = json.load(json_data)
 better_json = {}
 better_json['structure'] = data
 better_json['messages'] = []
-
-#pprint(better_json)
 
 def removeMessagesAndInsertIntoBetter(item):
   if item['type'] == 'category':
@@ -41,7 +46,25 @@ def removeMessagesAndInsertIntoBetter(item):
     del item['todo']
 
 removeMessagesAndInsertIntoBetter(better_json['structure'])
+#find top level dictionary with 'meditation'
+meditationMap = better_json['structure']['list'][0]
+for topitem in better_json['structure']['list']:
+  if topitem['title'] == 'Do you need a daily meditation':
+    meditationMap = topitem
+    break
 
+#print(meditationMap['list'])
+
+# put all messages into category with 'meditation'
+for m in better_json['messages']:
+  mCopy = m.copy()
+  del mCopy['message']
+  del mCopy['title']
+  del mCopy['todo']
+  mCopy['type'] = 'content'
+  meditationMap['list'].append(mCopy)
+
+# output JSON to stdout
 json_string = json.dumps(better_json, ensure_ascii=False).encode('utf8')
 print(json_string)
 
