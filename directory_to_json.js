@@ -50,6 +50,9 @@ function dirTree(filename) {
       // check for todo at beginning of line
       if (currentLine.match(/to do/i) || currentLine.match(/todo/i)) {
           info.todo = currentLine;
+      } else if (i == 0) {
+        message += currentLine;
+        message += "<br><br>";
       } else {
         message += currentLine;
       }

@@ -65,7 +65,7 @@ for m in better_json['messages']:
   meditationMap['list'].append(mCopy)
 
 # output JSON to stdout
-json_string = json.dumps(better_json, ensure_ascii=False).encode('utf8')
+json_string = json.dumps(better_json, ensure_ascii=True).encode('utf8')
 print(json_string)
 
 json_data.close()
