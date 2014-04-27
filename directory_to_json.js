@@ -48,8 +48,12 @@ function dirTree(filename) {
     for (i = 0; i < separatedLines.length; i++) {
       var currentLine = separatedLines[i];
       // check for todo at beginning of line
-      if (currentLine.match(/to do/i) || currentLine.match(/todo/i)) {
+      if (currentLine.match(/to do:/i) || currentLine.match(/todo:/i)) {
           info.todo = currentLine;
+          // everything after todo should be put into todo.
+          for (i; i < separatedLines.length; i++) {
+            info.todo += separatedLines[i];
+          }
       } else if (i == 0) {
         message += currentLine;
         message += "<br><br>";

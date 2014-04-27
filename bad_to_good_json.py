@@ -26,30 +26,30 @@ def removeMessagesAndInsertIntoBetter(item):
     # add message to messages list if not already contained
     foundtitle = 0
     foundidentifier = 0
-    for message in better_json['messages']:
-      if message['title'] == item['title']:
-        foundtitle = 1
-        foundidentifier = message['identifier']
-        break
+    #for message in better_json['messages']:
+    #  if message['title'] == item['title']:
+    #    foundtitle = 1
+    #    foundidentifier = message['identifier']
+    #    break
 
-    if foundtitle == 0:
-      copyitem = item.copy()
-      del copyitem['type']
-      better_json['messages'].append(copyitem)
-    else:
+    #if foundtitle == 0:
+    copyitem = item.copy()
+    del copyitem['type']
+    better_json['messages'].append(copyitem)
+    #else:
       #found the message. alter identifier for item
-      item['identifier'] = foundidentifier
+      #item['identifier'] = foundidentifier
 
     # delete all fiends from structure except id and type
     del item['message']
     del item['title']
-    del item['todo']
+    item.pop('todo', None)
 
 removeMessagesAndInsertIntoBetter(better_json['structure'])
 #find top level dictionary with 'meditation'
 meditationMap = better_json['structure']['list'][0]
 for topitem in better_json['structure']['list']:
-  if topitem['title'] == 'Do you need a daily meditation':
+  if topitem['title'] == 'do you want a daily meditation':
     meditationMap = topitem
     break
 
@@ -60,7 +60,7 @@ for m in better_json['messages']:
   mCopy = m.copy()
   del mCopy['message']
   del mCopy['title']
-  del mCopy['todo']
+  mCopy.pop('todo', None)
   mCopy['type'] = 'content'
   meditationMap['list'].append(mCopy)
 
